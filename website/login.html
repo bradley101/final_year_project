@@ -1,0 +1,63 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+		<link rel="stylesheet" href="mycssstyle.css" media="all" />
+		<script src="myjsscript.js"></script>
+		<script src="jquery-3.1.1.js"></script>
+		<script src="jquery-redirect.js"></script>
+		<script>
+			function getCookieValue(a) {
+				b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
+				return b ? b.pop() : '';
+			}
+			var id = getCookieValue("autohomeiduser");
+			var name = getCookieValue("autohomenameuser");
+			if(id != '' && name != '') {
+				$.ajax({
+					url: "decrypt.php",
+					data: "id=" + id,
+					type: "POST",
+					success: function(msg) {
+						id = msg;
+						$.redirect('home.php', {'id': id, 'name': name});
+					}
+				});
+			}
+		</script>
+		<title>Login to Auto Home</title>
+	</head>
+	<body onload="document.getElementById('email').focus();">
+	
+		<div class="header">
+			<h1>Auto Home</h1>
+		</div>
+	
+		<div class="boxed">
+			<div class="login_header">
+				<h2>Login</h2>
+			</div>
+			<form class="form">
+				<p class="email">
+					<input type="text" name="email" id="email" placeholder="Enter E-mail">
+				</p>
+				<p class="email">
+					<input type="password" name="password" id="password" placeholder="Enter Password">			
+				</p>
+				<p class="submit">
+					<input id="submit" type="button" value="LOGIN" onclick="validate();">
+				</p>
+			</form>
+		</div>
+		<div class="parent_alert" id="parent_error_alert">
+			<div class="alert error">
+				<span class="popup_heading">error: </span><span id="error_message">Invalid email address or password</span>
+			</div>
+		</div>
+		<div class="parent_alert" id="parent_success_alert">
+			<div class="alert success">
+				<span class="popup_heading">success: </span><span id="success_message">Logging you in. Please wait.</span>
+			</div>
+		</div>
+	</body>
+</html>
+	
